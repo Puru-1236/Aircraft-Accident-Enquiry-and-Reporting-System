@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Airline Accident Enquiry System</title>
+</head>
+<body style="background-color: azure;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <a class="navbar-brand" href="#">Airline Accident Enquiry System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Search  <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Statistics </a>
+            </li>
+            {% if not logged %}
+            <li class="nav-item ml-auto">
+              <a class="nav-link" href="#" data-toggle="modal" data-target="#logModal">Login </a>
+            </li>
+            {% endif %}
+            {% if logged %}
+            <li class="nav-item ml-auto active">
+              <a class="nav-link" href="/admin">Update </a>
+            </li>
+            <li class="nav-item ml-auto">
+              <a class="nav-link" href="/logout">Logout </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+      <div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="mt-1"></div>
+              <h5 class="modal-title" id="logModalLabel">Login</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="/login" method="POST">
+                <label for="password">Enter Password: </label>
+                <input type="password" class="form-control" name="password" required>
+                <button type="submit" class="btn-primary">Login</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row mt-3">
+          <h3 style="text-align: center;">Choose one criteria to see stats</h3>
+        </div>
+        <div class="row mt-3">
+          <a href="/year" role="button" class="btn btn-primary">YEAR</a>
+        </div>
+        <div class="row mt-3">
+          <a href="/model" role="button" class="btn btn-primary">MODEL</a>
+        </div>
+        <div class="row mt-3">
+          <a href="/country" role="button" class="btn btn-primary">COUNTRY</a>
+        </div>
+        <div class="row mt-3">
+          <a href="/location" role="button" class="btn btn-primary">LOCATION</a>
+        </div>
+        <div class="row mt-3">
+          <a href="/operator" role="button" class="btn btn-primary">Airline Operator</a>
+        </div>
+      </div>
+      
+</body>
+</html>
