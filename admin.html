@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Airline Accident Enquiry System</title>
+    <style>
+        #my_v_air {
+            display: none;
+        }
+
+        #my_v_acc {
+            display: none;
+        }
+
+        #my_v_del_acc {
+            display: none;
+        }
+    </style>
+</head>
+<body style="background-color: azure;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <a class="navbar-brand" href="#">Airline Accident Enquiry System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Search  <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/stats">Statistics </a>
+            </li>
+            {% if not logged %}
+            <li class="nav-item ml-auto">
+              <a class="nav-link" href="#" data-toggle="modal" data-target="#logModal">Login </a>
+            </li>
+            {% endif %}
+            {% if logged %}
+            <li class="nav-item ml-auto active">
+              <a class="nav-link" href="#">Update </a>
+            </li>
+            <li class="nav-item ml-auto">
+              <a class="nav-link" href="/logout">Logout </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+      <div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="logModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="mt-1"></div>
+              <h5 class="modal-title" id="logModalLabel">Login</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form action="/login" method="POST">
+                <label for="password">Enter Password: </label>
+                <input type="password" class="form-control" name="password" required>
+                <button type="submit" class="btn-primary">Login</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+          <div class="col-1"></div>
+          <div class="col-3">
+              <h2>Choose option</h2>
+              <input type="radio" name="up" value="air" class="air">
+              <p>Insert into aircraft1</p>
+              <div class="mt-2"></div>
+              <input type="radio" name="up" value="acc" class="air">
+              <p>Insert into airline_accident</p>
+              <div class="mt-2"></div>
+              <input type="radio" name="up" value="del_acc" class="air">
+              <p>Delete From airline_accident</p>
+          </div>
+          <div class="col-1"></div>
+          <div class="col-5" id="my_v_air" class="air_">
+              <form action="/air_ins" method="POST">
+                  {% for a in attrs_air %}
+                <div class="form-group">
+                    <label for="id">Enter {{ a }}: </label>
+                    <input type="text" class="form-control" name="{{a}}">
+                  </div>
+                  {% endfor %}
+                  <button type="submit" class="btn-primary">Submit</button>
+              </form>
+          </div>
+          <div class="col-5" id="my_v_acc">
+            <form action="/acc_ins" method="POST">
+                {% for a in attrs_acc %}
+              <div class="form-group">
+                  <label for="id">Enter {{ a }}: </label>
+                  {% if 'date' not in a %}
+                  <input type="text" class="form-control" name="{{a}}">
+                  {% endif %}
+                  {% if 'date' in a %}
+                  <input type="date" class="form-control" name="{{a}}">
+                  {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-5" id="my_v_del_acc">
+            <form action="/acc_del" method="POST">
+              <div class="form-group">
+                  <label for="id">Enter Event ID(integer) to delete</label>
+                  <input type="number" name="id" id="id">
+                </div>
+                <button type="submit" class="btn-primary">Submit</button>
+            </form>
+        </div>
+      </div>
+
+      <script>
+          $(document).ready(function() {
+                $('input[type="radio"]').click(function() {
+                    $('#my_v_air').hide();
+                    $('#my_v_acc').hide();
+                    $('#my_v_del_acc').hide();
+                    var n = $(this).attr('value');
+                    $('#my_v_'+n).show();
+                });
+            });
+      </script>
+</body>
+</html>
